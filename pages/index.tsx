@@ -2,21 +2,19 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useEffect, useState } from "react";
+import { HEIGHT, marchTimestamp, TRAVEL_DISTANCE, WIDTH } from "../utils/constants";
+import { calculateCurrentPosition } from "../utils/calculateCurrentPosition";
+import { getCountdownMessage } from "../utils/calculateRemaingTime";
 
-const HEIGHT = 300;
-const WIDTH = 700;
-const TRAVEL_DISTANCE = 600;
-
-const beginTimestamp: number = new Date("2021-12-20T17:40:00.000+00:00").getTime();
-const marchTimestamp: number = new Date("2021-12-20T18:58:00.000+00:00").getTime();
-const timespanInSeconds: number = (marchTimestamp - beginTimestamp) / 1000;
-
-const calculateCurrentPosition = () => (Date.now() - beginTimestamp) / 1000 * TRAVEL_DISTANCE / timespanInSeconds;
 
 const Home: NextPage = () => {
-    const [timeReached, setTimeReached] = useState(false)
+    const [timeLeft, setTimeLeft] = useState(Math.floor((marchTimestamp - Date.now()) / 1000));
 
     useEffect(() => {
+        setInterval(() => {
+            setTimeLeft( Math.floor((marchTimestamp - Date.now()) / 1000));
+        }, 1000)
+
         let ricardoImage = new Image();
         ricardoImage.src = 'ricardo.jpeg'; //i
 
@@ -33,16 +31,17 @@ const Home: NextPage = () => {
             const currentPosition = calculateCurrentPosition();
 
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
-            if (currentPosition < TRAVEL_DISTANCE) {
+            if (timeLeft >= 0) {
                 ctx.save();
                 ctx.translate(currentPosition, 100);
-                // ctx.translate((pcX += .00027), 100);
                 ctx.rotate(Math.PI / 180 * (ang += 5))
                 ctx.translate(-50, -50);
                 ctx.drawImage(macbookImage, 0, 0, 100, 100);
                 ctx.restore();
+
+                setTimeLeft(Math.floor((marchTimestamp - Date.now()) / 1000));
             } else {
-                setTimeReached(true)
+                setTimeLeft(0);
             }
 
             ctx.drawImage(ricardoImage, 550, 25, 150, 150); //draw the image ;)
@@ -69,9 +68,9 @@ const Home: NextPage = () => {
                     </canvas>
                 </div>
                 {
-                    timeReached
+                    timeLeft <= 0
                         ? <div>Já estamos em Março, onde está o meu pc?????</div>
-                        : <div>Faltam {timespanInSeconds / 3600 / 24} dias até Março</div>
+                        : <div>Faltam {getCountdownMessage(timeLeft)} até Março</div>
                 }
             </main>
         </div>

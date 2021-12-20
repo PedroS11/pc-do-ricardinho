@@ -24,6 +24,7 @@ const Home: NextPage = () => {
         macbookImage.src = 'macbook.jpeg';
 
         const canvas = document.getElementById("myCanvas");
+        // @ts-ignore
         const ctx = canvas.getContext("2d");
 
         let ang = 0; //angle

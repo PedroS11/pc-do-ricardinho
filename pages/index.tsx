@@ -15,8 +15,8 @@ const Home: NextPage = () => {
             setTimeLeft( Math.floor((marchTimestamp - Date.now()) / 1000));
         }, 1000)
 
-        let ricardoImage = new Image();
-        ricardoImage.src = 'ricardo.jpeg'; //i
+        let antonioImage = new Image();
+        antonioImage.src = 'dc.jpeg'; //i
 
         let macbookImage = new Image();
         macbookImage.src = 'macbook.jpeg';
@@ -44,21 +44,21 @@ const Home: NextPage = () => {
                 setTimeLeft(0);
             }
 
-            ctx.drawImage(ricardoImage, 550, 25, 150, 150); //draw the image ;)
+            ctx.drawImage(antonioImage, 550, 25, 150, 150); //draw the image ;)
         }, 50);
     }, []);
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>Onde está o Mac do Ricardinho?</title>
-                <meta name="description" content="Ricardinho é impaciente"/>
+                <title>Onde está o Mac do Toninho?</title>
+                <meta name="description" content="Toninho também é impaciente"/>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Onde está o Mac do Ricardinho?
+                    Onde está o Mac do Toninho?
                 </h1>
 
                 <div className={styles.grid}>
